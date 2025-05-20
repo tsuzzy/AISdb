@@ -185,6 +185,18 @@ jobs:
           cargo install --locked wasm-bindgen-cli --verbose
           cargo install --locked wasm-opt --verbose
           wasm-pack --version
+
+      - name: Check secrets are being read
+        run: |
+          echo "PGUSER = ${PGUSER:-empty}"
+          echo "PGPASS = ${PGPASS:+set}"
+          echo "POSTGRES_USER = ${POSTGRES_USER:-empty}"
+          echo "POSTGRES_PASSWORD = ${POSTGRES_PASSWORD:+set}"
+        env:
+          PGUSER: ${{ secrets.PGUSER }}
+          PGPASS: ${{ secrets.PGPASS }}
+          POSTGRES_USER: ${{ secrets.PGUSER }}
+          POSTGRES_PASSWORD: ${{ secrets.PGPASS }}
           
       - name: Setup PostgreSQL 17
         uses: ikalnytskyi/action-setup-postgres@v7
